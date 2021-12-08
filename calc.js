@@ -2,17 +2,39 @@ class Calculator{
     constructor(previousOperandTextElement, currentOperandTextElement){
         this.previousOperandTextElement = previousOperandTextElement;
         this.currentOperandTextElement = currentOperandTextElement;
-        this.clear();
-    }
-
-    clear(){
         this.currentOperand = '';
         this.previousOperand ='';
         this.operation = undefined;
+        this.logEntries= [];
+    }
+
+    clear(){
+        const logEntry = {
+            operation: 'CLEAR',
+            prevResult: this.previousOperand,
+            number: this.currentOperand,
+            resultFin: ''
+        };
+        this.logEntries.push(logEntry);
+        console.log(this.logEntries);
+        
+        this.currentOperand = '';
+        this.previousOperand ='';
+        this.operation = undefined;
+
     }
 
     delete(){
+        let tempHold = this.currentOperand;
         this.currentOperand= this.currentOperand.toString().slice(0,-1);
+        const logEntry = {
+            operation: 'DELETE',
+            prevResult: this.previousOperand,
+            number: tempHold,
+            resultFin: this.currentOperand
+        };
+        this.logEntries.push(logEntry);
+        console.log(this.logEntries);
     }
 
     appendNumber(number){
@@ -51,6 +73,16 @@ class Calculator{
             default:
                 return;
         }  
+
+        const logEntry = {
+            operation: this.operation,
+            prevResult: prev,
+            number: current,
+            resultFin: result
+        };
+
+        this.logEntries.push(logEntry);
+        console.log(this.logEntries);
         
         this.currentOperand = result;
         this.previousOperand = ''; 
@@ -59,13 +91,10 @@ class Calculator{
 
     updateDisplay(){
         this.currentOperandTextElement.innerText = this.currentOperand;
-
         if(this.operation != null){
             this.previousOperandTextElement.innerText = `${this.previousOperand}  ${this.operation}` ;
         }else {this.previousOperandTextElement.innerText = this.previousOperand;}
-
     }
-
 }
 
 const numberButtons = document.querySelectorAll('[data-number]');
