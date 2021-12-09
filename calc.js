@@ -54,8 +54,15 @@ class Calculator{
 
     compute(){
         let result; 
-        const prev = parseInt(this.previousOperand);
-        const current = parseInt(this.currentOperand);
+        let prev;
+        let current;
+        if(this.currentOperand.includes('.') || this.previousOperand.includes('.')){
+            prev = parseFloat(this.previousOperand);
+            current = parseFloat(this.currentOperand);
+        } else{
+         prev = parseInt(this.previousOperand);
+        current = parseInt(this.currentOperand);}
+        
         if(isNaN(prev) || isNaN(current)) return; //if prev or current is empty we dont compute
         switch(this.operation){
             case '+': 
